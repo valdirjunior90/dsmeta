@@ -4,6 +4,9 @@ import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import { useEffect, useState } from 'react';
 import axios from 'axios';
+import { BASE_URL } from '../../utils/requests';
+import { Sale } from '../../models/sale';
+import SalesList from '../SaleList';
 const SalesCard = () => {
 
     const min = new Date(new Date().setDate(new Date().getDate() - 365));
@@ -11,11 +14,12 @@ const SalesCard = () => {
 
     const [minDate,setMinDate] = useState<Date>(min);
     const [maxDate,setMaxDate] = useState<Date>(max);
+    const [sales,setSales] = useState<Array<Sale>>([]);
 
     useEffect(()=>{
-        axios.get("http://localhost:8080/sales")
+        axios.get(`${BASE_URL}/sales`)
         .then(response => {
-            console.log(response.data)
+            setSales(response.data.content);
         })
     },[])
 
@@ -53,47 +57,8 @@ const SalesCard = () => {
                   </tr>
                 </thead>
                 <tbody>
-                  <tr>
-                    <td className="show992">#341</td>
-                    <td className="show576">08/07/2022</td>
-                    <td>Anakin</td>
-                    <td className="show992">15</td>
-                    <td className="show992">11</td>
-                    <td>R$ 55300.00</td>
-                    <td>
-                      <div className="dsmeta-red-btn-container">
-                        <NotificationButton/>
-                      </div>
-                    </td>
-                  </tr>
-                  <tr>
-                    <td className="show992">#341</td>
-                    <td className="show576">08/07/2022</td>
-                    <td>Anakin</td>
-                    <td className="show992">15</td>
-                    <td className="show992">11</td>
-                    <td>R$ 55300.00</td>
-                    <td>
-                      <div className="dsmeta-red-btn-container">
-                        <NotificationButton/>
-                      </div>
-                    </td>
-                  </tr>
-                  <tr>
-                    <td className="show992">#341</td>
-                    <td className="show576">08/07/2022</td>
-                    <td>Anakin</td>
-                    <td className="show992">15</td>
-                    <td className="show992">11</td>
-                    <td>R$ 55300.00</td>
-                    <td>
-                      <div className="dsmeta-red-btn-container">
-                        <NotificationButton/>
-                      </div>
-                    </td>
-                  </tr>
+                  <SalesList sales={sales}/>
                 </tbody>
-
               </table>
             </div>
         </div>
